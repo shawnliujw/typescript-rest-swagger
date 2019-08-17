@@ -1,5 +1,7 @@
 'use strict';
 Object.defineProperty(exports, "__esModule", { value: true });
+var metadataGenerator_1 = require("./metadata/metadataGenerator");
+var generator_1 = require("./swagger/generator");
 /**
  * A decorator to document the responses that a given service method can return. It is used to generate
  * documentation for the REST service.
@@ -110,4 +112,15 @@ function IsDouble(target, propertyKey, parameterIndex) {
     return;
 }
 exports.IsDouble = IsDouble;
+function generateSwagger(compilerOptions, swaggerConfig) {
+    var metadata = new metadataGenerator_1.MetadataGenerator(swaggerConfig.entryFile, compilerOptions, swaggerConfig.ignore).generate();
+    new generator_1.SpecGenerator(metadata, swaggerConfig).generate()
+        .then(function () {
+        console.info('Generation completed.');
+    })
+        .catch(function (err) {
+        console.error("Error generating swagger. " + err);
+    });
+}
+exports.generateSwagger = generateSwagger;
 //# sourceMappingURL=decorators.js.map

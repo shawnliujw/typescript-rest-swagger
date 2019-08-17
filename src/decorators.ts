@@ -1,5 +1,10 @@
 'use strict';
 
+import * as ts from "typescript";
+import {SwaggerConfig} from "./config";
+import {MetadataGenerator} from "./metadata/metadataGenerator";
+import {SpecGenerator} from "./swagger/generator";
+
 /**
  * A decorator to document the responses that a given service method can return. It is used to generate
  * documentation for the REST service.
@@ -100,4 +105,15 @@ export function IsFloat(target: any, propertyKey: string, parameterIndex?: numbe
  */
 export function IsDouble(target: any, propertyKey: string, parameterIndex?: number) {
   return;
+}
+
+export function generateSwagger(compilerOptions: ts.CompilerOptions, swaggerConfig: SwaggerConfig) {
+  const metadata = new MetadataGenerator(swaggerConfig.entryFile, compilerOptions, swaggerConfig.ignore).generate();
+  new SpecGenerator(metadata, swaggerConfig).generate()
+      .then(() => {
+        console.info('Generation completed.');
+      })
+      .catch((err: any) => {
+        console.error(`Error generating swagger. ${err}`);
+      });
 }

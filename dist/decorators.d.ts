@@ -1,3 +1,5 @@
+import * as ts from "typescript";
+import { SwaggerConfig } from "./config";
 /**
  * A decorator to document the responses that a given service method can return. It is used to generate
  * documentation for the REST service.
@@ -76,3 +78,4 @@ export declare function IsFloat(target: any, propertyKey: string, parameterIndex
  * This is the default for `number` types without a specifying decorator.
  */
 export declare function IsDouble(target: any, propertyKey: string, parameterIndex?: number): void;
+export declare function generateSwagger(compilerOptions: ts.CompilerOptions, swaggerConfig: SwaggerConfig): void;
