@@ -463,7 +463,7 @@ function getModelTypeProperties(node: any, genericTypes?: Array<ts.TypeNode>): A
     if (node.kind === ts.SyntaxKind.TypeAliasDeclaration) {
         const typeAlias = node as ts.TypeAliasDeclaration;
 
-        return !keywords.includes(typeAlias.type.kind) 
+        return !keywords.includes(typeAlias.type.kind)
             ? getModelTypeProperties(typeAlias.type, genericTypes)
             : [];
     }
@@ -613,21 +613,22 @@ function getSubClassGenericTypes(genericTypeMap?: Map<String, ts.TypeNode>, type
     return null;
 }
 
-export function getSuperClass(node: ts.ClassDeclaration, typeArguments?: Map<String, ts.TypeNode>) {
-    const clauses = node.heritageClauses;
-    if (clauses) {
-        const filteredClauses = clauses.filter(clause => clause.token === ts.SyntaxKind.ExtendsKeyword);
-        if (filteredClauses.length > 0) {
-            const clause: ts.HeritageClause = filteredClauses[0];
-            if (clause.types && clause.types.length) {
-                const type: any = MetadataGenerator.current.getClassDeclaration(clause.types[0].expression.getText());
-                return {
-                    type: type,
-                    typeArguments: resolveTypeArguments(type, clause.types[0].typeArguments, typeArguments)
-                };
-            }
-        }
-    }
+// modify this funciton temporary to support eggjs which controller class will extend Controller(Egg)
+export function getSuperClass(node: ts.ClassDeclaration, typeArguments?: Map<String, ts.TypeNode>): any {
+    // const clauses = node.heritageClauses;
+    // if (clauses) {
+    //     const filteredClauses = clauses.filter(clause => clause.token === ts.SyntaxKind.ExtendsKeyword);
+    //     if (filteredClauses.length > 0) {
+    //         const clause: ts.HeritageClause = filteredClauses[0];
+    //         if (clause.types && clause.types.length) {
+    //             const type: any = MetadataGenerator.current.getClassDeclaration(clause.types[0].expression.getText());
+    //             return {
+    //                 type: type,
+    //                 typeArguments: resolveTypeArguments(type, clause.types[0].typeArguments, typeArguments)
+    //             };
+    //         }
+    //     }
+    // }
     return undefined;
 }
 
