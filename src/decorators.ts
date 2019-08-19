@@ -1,7 +1,6 @@
 'use strict';
 
 import * as ts from "typescript";
-import {SwaggerConfig} from "./config";
 import {MetadataGenerator} from "./metadata/metadataGenerator";
 import {SpecGenerator} from "./swagger/generator";
 
@@ -107,7 +106,7 @@ export function IsDouble(target: any, propertyKey: string, parameterIndex?: numb
   return;
 }
 
-export function generateSwagger(compilerOptions: ts.CompilerOptions, swaggerConfig: SwaggerConfig) {
+export function generateSwagger(compilerOptions: ts.CompilerOptions, swaggerConfig: any) {
   const metadata = new MetadataGenerator(swaggerConfig.entryFile, compilerOptions, swaggerConfig.ignore).generate();
   new SpecGenerator(metadata, swaggerConfig).generate()
       .then(() => {
